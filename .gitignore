@@ -1,0 +1,11 @@
+.vscode/
+output/
+Include/
+Lib/
+Scripts/
+tcl/
+__pycache__/
+
+tempCodeRunnerFile.py
+debug.log
+pip-selfcheck.json
