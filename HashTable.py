@@ -10,7 +10,7 @@ class HashTable:
 
     def __init__(self, size=1000):        
         self.size = size
-        self.count = 0
+        self.collisions = 0
         self.items = 0
         self.slots = [None for _ in range(self.size)]
 
@@ -26,7 +26,19 @@ class HashTable:
         """
         Allows for "HashTable[key]" syntax for returning values
         """
-        self.get(key)
+        return self.get(key)
+
+    def __repr__(self):
+        """
+        Return the official string representation of the data structure
+        """    
+        return f"{{{', '.join([f'{repr(key)}: {repr(self.get(key))}' for key in self._keys])}}}"
+
+    def __missing__(self, key):
+        return None
+
+    def __len__(self):
+        return self.items
 
     def _hash(self, key) -> int:
         """
@@ -40,6 +52,12 @@ class HashTable:
         """
         return self._keys
 
+    def values(self):
+        """
+        Returns a list of values
+        """
+        return [self.get(key) for key in self._keys]        
+
     def put(self, key, value):
         """
         Add item to Hash Table. Creates a new list at the index, 
@@ -50,7 +68,7 @@ class HashTable:
 
         if self.slots[index]:
             self.slots[index].append(item)
-            self.count += 1
+            self.collisions += 1
         else:
             self.slots[index] = [item]
 
@@ -61,15 +79,19 @@ class HashTable:
         """
         Locates index of hashed value, traverses index list and returns value of key, if it exists
         """
-        index = self._hash(key)
+        # if type(key) is not str:
+        #     raise TypeError()
 
-        # Traverse slot index and return item when found
-        if self.slots[index]:
-            for item in self.slots[index]:
-                if item.key == key:
-                    return item.value
+        if key not in self.keys():
+            raise KeyError(key)
+        else:
+            index = self._hash(key)
 
-        return None
+            # Traverse slot index and return item when found
+            if self.slots[index]:
+                for item in self.slots[index]:
+                    if item.key == key:
+                        return item.value
    
 if __name__ == "__main__":
     from datetime import datetime
@@ -88,9 +110,10 @@ if __name__ == "__main__":
 
     lookupTime = datetime.now()
     for key in keys:
-        print(ht.get(key))
+        print(ht[key])
     
     print("Lookups: ", datetime.now() - lookupTime)
     print("Total: ", datetime.now() - startTime)
 
     print(ht.keys())
+    print(repr(ht))
