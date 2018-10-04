@@ -6,6 +6,7 @@ Scripts/
 tcl/
 __pycache__/
 
+*.txt
 tempCodeRunnerFile.py
 debug.log
 pip-selfcheck.json
