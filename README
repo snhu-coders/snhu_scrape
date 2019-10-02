@@ -1,0 +1,3 @@
+A terribly inefficient web scraping utility to pull the
+SNHU Course Catalog into JSON format to be loaded
+into a Mongo database and consumed by NOOB SNHUbot.
